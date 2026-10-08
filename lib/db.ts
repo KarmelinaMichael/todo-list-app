@@ -1,0 +1,6 @@
+import Dexie,{type Table} from 'dexie';
+import type {Task,Completion,DayRecord,Settings,ScheduleOverride,ReminderEvent} from './types';
+class DayDB extends Dexie{tasks!:Table<Task,string>;completions!:Table<Completion,string>;days!:Table<DayRecord,string>;settings!:Table<Settings,string>;overrides!:Table<ScheduleOverride,string>;reminders!:Table<ReminderEvent,string>;constructor(){super('my-little-day');this.version(1).stores({tasks:'id,active,*days,order',completions:'[taskId+date],date,taskId',days:'date',settings:'name'});this.version(2).stores({tasks:'id,active,*days,order',completions:'[taskId+date],date,taskId',days:'date',settings:'name',overrides:'[taskId+date],date,taskId'}).upgrade(tx=>tx.table('settings').toCollection().modify(s=>{s.eveningMode ??= {enabled:true,startTime:'20:00',endTime:'06:00'};s.notificationsEnabled ??= false;s.motivationalMessages ??= true;}));this.version(3).stores({tasks:'id,active,*days,order',completions:'[taskId+date],date,taskId',days:'date',settings:'name',overrides:'[taskId+date],date,taskId',reminders:'id,date,taskId,status,[taskId+date]'});}}
+export const db=new DayDB();
+export const completionKey=(taskId:string,date:string)=>`${taskId}|${date}`;
+export const overrideKey=(taskId:string,date:string)=>`${taskId}|${date}`;

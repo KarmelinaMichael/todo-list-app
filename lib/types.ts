@@ -1,0 +1,12 @@
+export type Weekday=0|1|2|3|4|5|6;
+export type CategoryId='work'|'home'|'daughter'|'prep'|'me'|'couple';
+export type Mood='good'|'tired'|'overwhelmed'|'motivated'|'happy';
+export type Task={id:string;title:string;category:CategoryId;days:Weekday[];time?:string;duration?:number;reminderEnabled?:boolean;reminderTime?:string;order:number;active:boolean};
+export type Completion={taskId:string;date:string;completedAt:string};
+export type ReminderStatus='sent'|'dismissed'|'missed';
+export type ReminderEvent={id:string;taskId:string;date:string;reminderTime:string;status:ReminderStatus;occurredAt:string;};
+export type ScheduleOverride={taskId:string;date:string;action:'add'|'remove'};
+export type DayRecord={date:string;mood?:Mood;eveningMode:boolean};
+export type Settings={name:string;eveningMode:{enabled:boolean;startTime:string;endTime:string};notificationsEnabled:boolean;motivationalMessages:boolean};
+export type AppData={tasks:Task[];completions:Completion[];days:DayRecord[];settings:Settings;overrides:ScheduleOverride[]};
+export const categories:Record<CategoryId,{name:string;icon:string;color:string}>= {work:{name:'Work',icon:'💻',color:'#C9B8F4'},home:{name:'Home',icon:'🏠',color:'#F6B6A6'},daughter:{name:'Daughter',icon:'❤️',color:'#FBE2DB'},prep:{name:'Prep',icon:'🍋',color:'#FFF1B8'},me:{name:'Me',icon:'🎨',color:'#C9B8F4'},couple:{name:'Us',icon:'❤️',color:'#E8897A'}};
